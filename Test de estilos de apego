@@ -1,0 +1,423 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz de Estilos de Apego - Descubre Cómo Amas</title>
+    <meta name="description" content="Descubre cómo tu estilo de apego influye en tus relaciones románticas, familiares y de amistad. Test psicológico gratuito de 2 minutos.">
+    <meta property="og:title" content="Quiz: ¿Cómo Afecta tu Estilo de Apego a tus Relaciones?">
+    <meta property="og:description" content="Descubre los patrones únicos en tus relaciones y aprende a crear conexiones más profundas. Solo 2 minutos.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=1200&h=630&fit=crop">
+    <meta property="og:type" content="website">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+            margin: 0;
+            padding: 0;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        .fade-out {
+            animation: fadeOut 0.3s ease-out;
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.95); }
+        }
+
+        .icon-heart::before { content: "💝"; }
+        .icon-zap::before { content: "⚡"; }
+        .icon-shield::before { content: "🛡️"; }
+        .icon-users::before { content: "🌊"; }
+        .icon-chevron::before { content: "→"; }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #2d4a60 0%, #7fb8a3 35%, #d4af37 70%, #f4a688 100%);
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg flex items-center justify-center p-4">
+        <div class="max-w-2xl w-full">
+            <!-- Welcome Screen -->
+            <div id="welcome-screen" class="text-center space-y-8 fade-in">
+                <div class="relative">
+                    <div class="absolute inset-0 blur-3xl bg-gradient-to-r from-pink-500 to-violet-600 opacity-30 rounded-full"></div>
+                    <h1 class="relative text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
+                        Descubre Tu
+                        <span class="block text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-violet-400">
+                            Estilo de Apego
+                        </span>
+                    </h1>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur-md rounded-3xl p-6 md:p-8 shadow-2xl">
+                    <p class="text-lg md:text-xl text-gray-200 max-w-lg mx-auto leading-relaxed mb-6">
+                        Tus relaciones no son casualidad. La forma en que te acercas a otros, manejas los conflictos o pides apoyo tiene raíces profundas. A esto lo llamamos tu <strong>estilo de apego</strong>.
+                    </p>
+                    
+                    <p class="text-base md:text-lg text-gray-300 max-w-md mx-auto leading-relaxed mb-6">
+                        Este test te ayudará a identificar tu patrón predominante en pareja, familia y amistades. No hay resultados "correctos" o "incorrectos": cada estilo tiene fortalezas únicas y oportunidades de crecimiento.
+                    </p>
+                    
+                    <p class="text-base text-gray-300 max-w-md mx-auto leading-relaxed">
+                        Al final recibirás una descripción personalizada de tu estilo y cómo influye en tus vínculos. Es el primer paso para crear relaciones más conscientes y satisfactorias.
+                    </p>
+                </div>
+                
+                <button id="start-btn" class="group relative inline-flex items-center gap-3 bg-gradient-to-r from-yellow-600 to-yellow-500 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:from-yellow-500 hover:to-yellow-400 hover:scale-105 hover:shadow-2xl shadow-lg" style="background: linear-gradient(135deg, #d4af37 0%, #f4a688 100%);">
+                    <span>Comienza el Test</span>
+                    <span class="icon-chevron text-xl transition-transform group-hover:translate-x-1"></span>
+                    <div class="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-400 to-orange-400 opacity-0 group-hover:opacity-20 transition-opacity blur-xl"></div>
+                </button>
+            </div>
+
+            <!-- Quiz Screen -->
+            <div id="quiz-screen" class="space-y-8 hidden">
+                <div class="flex justify-between items-center mb-8">
+                    <div id="progress-bar" class="flex gap-2">
+                        <!-- Progress bars will be inserted here -->
+                    </div>
+                    <span id="progress-text" class="text-white/60 text-sm font-medium"></span>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-md rounded-3xl p-6 md:p-8 shadow-2xl">
+                    <h2 id="question-text" class="text-xl md:text-2xl font-bold text-white mb-8 leading-relaxed"></h2>
+                    <div id="options-container" class="space-y-3">
+                        <!-- Options will be inserted here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Result Screen -->
+            <div id="result-screen" class="space-y-8 hidden">
+                <div class="text-center">
+                    <div id="result-icon" class="inline-flex p-6 rounded-full text-white mb-6 shadow-2xl text-6xl">
+                        <!-- Icon will be inserted here -->
+                    </div>
+                    
+                    <h2 id="result-title" class="text-3xl md:text-4xl font-bold text-white mb-4"></h2>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-md rounded-3xl p-6 md:p-8 shadow-2xl space-y-6">
+                    <div id="result-description" class="text-lg md:text-xl text-gray-200 leading-relaxed"></div>
+                    
+                    <div id="result-details" class="text-base md:text-lg text-gray-300 leading-relaxed space-y-4">
+                        <!-- Detailed content will be inserted here -->
+                    </div>
+                </div>
+
+                <div class="bg-white/5 backdrop-blur-sm rounded-3xl p-6 md:p-8 shadow-xl">
+                    <h3 class="text-xl md:text-2xl font-semibold text-white mb-4">¿Qué sigue ahora?</h3>
+                    <p class="text-gray-200 leading-relaxed mb-6">
+                        Conocer tu estilo de apego es solo el primer paso. Lo realmente transformador es cómo usas esta información para crear relaciones más conscientes y satisfactorias.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <p class="text-gray-300">Si quieres profundizar y llevar este descubrimiento a la práctica, tienes dos caminos:</p>
+                        
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-white/10 rounded-xl p-4">
+                                <h4 class="font-semibold text-white mb-2">Guía completa</h4>
+                                <p class="text-gray-300 text-sm">Ejemplos prácticos, ejercicios y estrategias para fortalecer tus relaciones desde tu estilo único.</p>
+                            </div>
+                            
+                            <div class="bg-white/10 rounded-xl p-4">
+                                <h4 class="font-semibold text-white mb-2">Consulta personalizada</h4>
+                                <p class="text-gray-300 text-sm">Trabajamos tu caso específico, explorando tus patrones y diseñando nuevas formas de vincularte.</p>
+                            </div>
+                        </div>
+                        
+                        <p class="text-gray-200 text-center italic">Elige la opción que más resuene contigo y da el siguiente paso en tu crecimiento personal.</p>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button id="restart-btn" class="group relative inline-flex items-center gap-3 bg-gradient-to-r from-yellow-600 to-yellow-500 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:from-yellow-500 hover:to-yellow-400 hover:scale-105 hover:shadow-2xl shadow-lg" style="background: linear-gradient(135deg, #d4af37 0%, #f4a688 100%);">
+                        <span>Tomar Test Nuevamente</span>
+                        <span class="icon-chevron text-xl transition-transform group-hover:translate-x-1"></span>
+                        <div class="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-400 to-orange-400 opacity-0 group-hover:opacity-20 transition-opacity blur-xl"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Quiz data and logic
+        const questions = [
+            {
+                text: "En una relación romántica, cuando mi pareja necesita espacio, yo...",
+                options: [
+                    { text: "Lo respeto y confío en que volverá cuando esté listo, aunque a veces me preocupe un poco", score: { secure: 3, anxious: 0, avoidant: 1, fearful: 1 } },
+                    { text: "Me inquieto porque siento que algo puede estar mal entre nosotros", score: { secure: 0, anxious: 3, avoidant: 0, fearful: 2 } },
+                    { text: "Me enfoco en mis propias actividades, aunque en el fondo me cuesta expresar lo que siento", score: { secure: 1, anxious: 0, avoidant: 3, fearful: 1 } },
+                    { text: "Me siento rechazado y al mismo tiempo culpable por sentirme así", score: { secure: 0, anxious: 1, avoidant: 1, fearful: 3 } }
+                ]
+            },
+            {
+                text: "Cuando tengo un desacuerdo importante con un amigo cercano, mi reacción natural es...",
+                options: [
+                    { text: "Hablo del tema directamente, aunque a veces me cueste encontrar el momento adecuado", score: { secure: 3, anxious: 1, avoidant: 0, fearful: 0 } },
+                    { text: "Siento urgencia por resolverlo porque me genera mucha inquietud", score: { secure: 2, anxious: 3, avoidant: 0, fearful: 1 } },
+                    { text: "Prefiero tomarme tiempo para reflexionar, aunque esto pueda interpretarse como distancia", score: { secure: 0, anxious: 0, avoidant: 3, fearful: 2 } },
+                    { text: "Evito el conflicto para mantener la paz, pero luego me quedo con la sensación de no haber sido auténtico", score: { secure: 0, anxious: 1, avoidant: 1, fearful: 3 } }
+                ]
+            },
+            {
+                text: "En mis relaciones familiares, cuando atravieso una situación difícil...",
+                options: [
+                    { text: "Puedo pedir apoyo sin sentirme una carga, aunque a veces me cueste ser específico sobre lo que necesito", score: { secure: 3, anxious: 1, avoidant: 0, fearful: 0 } },
+                    { text: "Busco mucha validación y tranquilidad porque me ayuda a sentirme más seguro", score: { secure: 0, anxious: 3, avoidant: 0, fearful: 1 } },
+                    { text: "Prefiero resolver las cosas por mi cuenta, aunque valoro saber que están disponibles", score: { secure: 0, anxious: 0, avoidant: 3, fearful: 1 } },
+                    { text: "Quiero apoyo pero me da miedo ser vulnerable, así que envío señales contradictorias", score: { secure: 1, anxious: 1, avoidant: 1, fearful: 3 } }
+                ]
+            },
+            {
+                text: "En una cita o al conocer a alguien que me interesa, me siento más cómodo cuando...",
+                options: [
+                    { text: "Hay fluidez natural entre momentos profundos y conversación ligera, sin forzar ninguno", score: { secure: 3, anxious: 0, avoidant: 1, fearful: 0 } },
+                    { text: "Puedo expresar interés genuino y hablar de lo que realmente me importa sin filtros", score: { secure: 1, anxious: 3, avoidant: 0, fearful: 1 } },
+                    { text: "Mantengo cierto misterio personal mientras disfruto conocer a la otra persona", score: { secure: 1, anxious: 0, avoidant: 3, fearful: 1 } },
+                    { text: "Siento conexión intensa pero también necesidad de protegerme de posibles decepciones", score: { secure: 0, anxious: 1, avoidant: 0, fearful: 3 } }
+                ]
+            },
+            {
+                text: "Si un amigo cancela nuestros planes a último momento, típicamente...",
+                options: [
+                    { text: "Lo entiendo y reagendamos, aunque me permito sentir una pequeña decepción", score: { secure: 3, anxious: 0, avoidant: 0, fearful: 0 } },
+                    { text: "Me afecta más de lo que me gustaría y busco entender qué pasó realmente", score: { secure: 0, anxious: 3, avoidant: 0, fearful: 1 } },
+                    { text: "No me molesta demasiado porque siempre tengo un plan B, aunque me quedo pensando", score: { secure: 1, anxious: 0, avoidant: 3, fearful: 1 } },
+                    { text: "Me genera dudas sobre nuestra amistad, aunque trato de no dramatizar", score: { secure: 0, anxious: 1, avoidant: 0, fearful: 3 } }
+                ]
+            },
+            {
+                text: "En una relación estable, mi forma natural de expresar cariño es...",
+                options: [
+                    { text: "A través de gestos consistentes y palabras que reflejan realmente lo que siento", score: { secure: 3, anxious: 0, avoidant: 1, fearful: 0 } },
+                    { text: "Siendo muy presente y buscando crear muchos momentos de conexión juntos", score: { secure: 0, anxious: 3, avoidant: 0, fearful: 1 } },
+                    { text: "Mostrando mi cariño de maneras prácticas, aunque me cueste ser muy expresivo verbalmente", score: { secure: 1, anxious: 0, avoidant: 3, fearful: 1 } },
+                    { text: "Con intensidad genuina que a veces varía según mi estado emocional", score: { secure: 0, anxious: 1, avoidant: 0, fearful: 3 } }
+                ]
+            }
+        ];
+
+        const attachmentStyles = {
+            secure: {
+                title: "Apego Seguro",
+                icon: "💝",
+                color: "from-emerald-400 to-teal-500", 
+                bgColor: "#10b981",
+                description: "Te sientes cómodo tanto con la cercanía como con la independencia. Sueles comunicar lo que necesitas de manera clara y generas confianza en quienes te rodean.",
+                details: [
+                    "Tu base sólida hace que muchas de tus relaciones sean estables y satisfactorias. Tienes la capacidad de mantener tu individualidad sin alejarte emocionalmente de otros.",
+                    "A veces, sin darte cuenta, puedes priorizar tanto la armonía que dejas de lado tus propias necesidades. Prestar atención a esos momentos te ayudará a mantener un equilibrio aún más sano.",
+                    "Tu estilo es naturalmente un refugio seguro para otros. Al mismo tiempo, puedes crecer explorando cómo mantener tu autenticidad incluso cuando surgen diferencias o conflictos."
+                ]
+            },
+            anxious: {
+                title: "Apego Ansioso",
+                icon: "⚡",
+                color: "from-orange-400 to-red-500",
+                bgColor: "#f97316",
+                description: "Buscas conexión profunda pero a menudo esto viene acompañado de preocupación excesiva por la estabilidad de tus relaciones. Esta necesidad constante de validación puede estar generando más ansiedad de la que te mereces.",
+                details: [
+                    "Es probable que reconozcas algunos patrones: revisar constantemente mensajes, interpretar silencios como rechazo, o sentir que das mucho más de lo que recibes. Aunque tu capacidad empática es real, puede estar combinada con una sensación de inseguridad que te agota.",
+                    "Este patrón suele llevar a relaciones donde la ansiedad es protagonista, creando dinámicas de perseguir-alejarse que terminan confirmando tus peores temores. No es que seas 'demasiado sensible', sino que has aprendido a hipervigilar las relaciones.",
+                    "Con trabajo consciente puedes canalizar tu sensibilidad genuina sin la carga de la ansiedad constante. Muchas personas con este estilo logran desarrollar relaciones más tranquilas cuando aprenden estrategias de autorregulación emocional."
+                ]
+            },
+            avoidant: {
+                title: "Apego Evitativo",
+                icon: "🛡️",
+                color: "from-sky-400 to-blue-600",
+                bgColor: "#0ea5e9",
+                description: "Valoras profundamente tu independencia y prefieres mantener cierto espacio emocional. Sueles ser confiable y estable en tus vínculos.",
+                details: [
+                    "Tu capacidad de mantener la calma y pensar con claridad es muy valiosa en las relaciones. Otros te ven como alguien en quien pueden confiar y que no los asfixiará emocionalmente.",
+                    "Esa necesidad de distancia a veces puede interpretarse como frialdad, incluso cuando sí te importa profundamente la relación. Abrirte gradualmente al intercambio emocional fortalece los vínculos sin comprometer tu autonomía.",
+                    "Tu serenidad y sentido de responsabilidad son fortalezas genuinas. Cuando logras compartir más de tu mundo interno, otros pueden conectar contigo de manera más profunda y segura."
+                ]
+            },
+            fearful: {
+                title: "Apego Desorganizado",
+                icon: "🌊",
+                color: "from-violet-500 to-purple-600",
+                bgColor: "#8b5cf6",
+                description: "Experimentas una mezcla intensa entre desear cercanía y temerla al mismo tiempo. Este patrón, aunque comprensible por tu historia, puede estar generando más sufrimiento del necesario en tus relaciones.",
+                details: [
+                    "Es posible que reconozcas patrones repetitivos: atraer o ser atraído hacia relaciones complicadas, sentir que las relaciones son impredecibles, o vivir una montaña rusa emocional constante. Estos no son defectos de carácter, sino estrategias aprendidas en situaciones donde el amor y el miedo estaban mezclados.",
+                    "La buena noticia es que el apego desorganizado es el que más puede beneficiarse del trabajo terapéutico. Con el acompañamiento adecuado, es posible desarrollar un estilo más seguro y experimentar relaciones más estables y satisfactorias.",
+                    "Tu sensibilidad emocional, cuando se integra en un contexto de seguridad, puede convertirse en una gran fortaleza para crear vínculos profundos. El primer paso es reconocer estos patrones, y ya lo has dado al hacer este test."
+                ]
+            }
+        };
+
+        // State
+        let currentQuestion = 0;
+        let answers = [];
+        let isAnimating = false;
+
+        // DOM elements
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const startBtn = document.getElementById('start-btn');
+        const restartBtn = document.getElementById('restart-btn');
+
+        // Functions
+        function showScreen(screenName) {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            // Hide all screens
+            [welcomeScreen, quizScreen, resultScreen].forEach(screen => {
+                screen.classList.add('fade-out');
+                screen.classList.remove('fade-in');
+            });
+
+            setTimeout(() => {
+                [welcomeScreen, quizScreen, resultScreen].forEach(screen => {
+                    screen.classList.add('hidden');
+                });
+
+                // Show target screen
+                const targetScreen = document.getElementById(screenName + '-screen');
+                targetScreen.classList.remove('hidden');
+                targetScreen.classList.remove('fade-out');
+                targetScreen.classList.add('fade-in');
+                
+                isAnimating = false;
+            }, 300);
+        }
+
+        function updateProgressBar() {
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            
+            progressBar.innerHTML = '';
+            for (let i = 0; i < questions.length; i++) {
+                const bar = document.createElement('div');
+                bar.className = `h-2 rounded-full transition-all duration-500 ${
+                    i < currentQuestion
+                        ? 'w-12 bg-gradient-to-r'
+                        : i === currentQuestion
+                        ? 'w-16'
+                        : 'w-8 bg-white/20'
+                }`;
+                
+                if (i < currentQuestion) {
+                    bar.style.background = 'linear-gradient(90deg, #7fb8a3 0%, #d4af37 100%)';
+                } else if (i === currentQuestion) {
+                    bar.style.backgroundColor = '#10b981';
+                }
+                
+                progressBar.appendChild(bar);
+            }
+            
+            progressText.textContent = `${currentQuestion + 1} de ${questions.length}`;
+        }
+
+        function displayQuestion() {
+            const question = questions[currentQuestion];
+            document.getElementById('question-text').textContent = question.text;
+            
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'w-full text-left p-4 md:p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 text-white transition-all duration-300 hover:bg-white/10 hover:border-white/30 hover:scale-[1.02] hover:shadow-lg';
+                button.innerHTML = `<span class="text-base md:text-lg leading-relaxed">${option.text}</span>`;
+                button.onclick = () => handleAnswer(option);
+                optionsContainer.appendChild(button);
+            });
+
+            updateProgressBar();
+        }
+
+        function handleAnswer(option) {
+            if (isAnimating) return;
+            
+            answers.push(option);
+            
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                displayQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function calculateResult() {
+            const scores = { secure: 0, anxious: 0, avoidant: 0, fearful: 0 };
+            
+            answers.forEach(answer => {
+                Object.keys(scores).forEach(style => {
+                    scores[style] += answer.score[style];
+                });
+            });
+
+            const maxScore = Math.max(...Object.values(scores));
+            return Object.keys(scores).find(key => scores[key] === maxScore);
+        }
+
+        function showResult() {
+            const result = calculateResult();
+            const style = attachmentStyles[result];
+            
+            // Update result display
+            const resultIcon = document.getElementById('result-icon');
+            resultIcon.textContent = style.icon;
+            resultIcon.className = `inline-flex p-6 rounded-full text-white mb-6 shadow-2xl text-6xl`;
+            resultIcon.style.backgroundColor = style.bgColor;
+            
+            document.getElementById('result-title').textContent = style.title;
+            document.getElementById('result-description').textContent = style.description;
+            
+            // Display detailed content
+            const resultDetails = document.getElementById('result-details');
+            resultDetails.innerHTML = '';
+            style.details.forEach(detail => {
+                const paragraph = document.createElement('p');
+                paragraph.textContent = detail;
+                resultDetails.appendChild(paragraph);
+            });
+            
+            showScreen('result');
+        }
+
+        function restart() {
+            currentQuestion = 0;
+            answers = [];
+            showScreen('welcome');
+        }
+
+        function startQuiz() {
+            currentQuestion = 0;
+            answers = [];
+            displayQuestion();
+            showScreen('quiz');
+        }
+
+        // Event listeners
+        startBtn.addEventListener('click', startQuiz);
+        restartBtn.addEventListener('click', restart);
+
+        // Initialize
+        console.log('Quiz de Estilos de Apego cargado correctamente');
+    </script>
+</body>
+</html>
